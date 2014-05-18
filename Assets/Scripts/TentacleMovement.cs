@@ -28,10 +28,15 @@ public class TentacleMovement : MonoBehaviour {
 			float xAxisCursor = Input.GetAxis ("CursorHorizontal");
 			float yAxisCursor = Input.GetAxis ("CursorVertical");
 			
-			float moveXPalm = xAxisCursor * speed * Time.deltaTime;
-			float moveYPalm = yAxisCursor * speed * Time.deltaTime;
+			rigidbody2D.angularVelocity = 0.0f;
 			
-			rigidbody2D.AddForce (new Vector3 (moveXPalm, moveYPalm, 0.0f));
+			if (xAxisCursor != 0.0f || yAxisCursor != 0.0f){
+				
+				float moveXPalm = xAxisCursor * speed * Time.deltaTime;
+				float moveYPalm = yAxisCursor * speed * Time.deltaTime;
+				
+				rigidbody2D.AddForce (new Vector3 (moveXPalm, moveYPalm, 0.0f));
+			}
 		}
 	}
 }

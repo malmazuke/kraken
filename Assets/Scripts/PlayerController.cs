@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour {
 			float angle = Mathf.Atan2(-xAxis, yAxis) * Mathf.Rad2Deg;
 			Quaternion desiredDirection = Quaternion.AngleAxis(angle, Vector3.forward);
 			
-			if (desiredDirection != Quaternion.identity){
+			if (xAxis != 0.0f || yAxis != 0.0f){
 				rigidbody2D.angularVelocity = 0.0f;
 				transform.rotation = Quaternion.Slerp(transform.rotation, desiredDirection, 0.2f);
 			}
