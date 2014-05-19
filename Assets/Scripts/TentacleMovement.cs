@@ -3,6 +3,7 @@ using System.Collections;
 
 public class TentacleMovement : MonoBehaviour {
 
+	public Joystick tentacleJoystick;
 	public float speed = 1.0f;
 	private GameController gameController;
 	
@@ -25,8 +26,8 @@ public class TentacleMovement : MonoBehaviour {
 			// Tentacle Movement
 			// Get the horizontal and vertical axis.
 			// The value is in the range -1 to 1
-			float xAxisCursor = Input.GetAxis ("CursorHorizontal");
-			float yAxisCursor = Input.GetAxis ("CursorVertical");
+			float xAxisCursor = tentacleJoystick.position.x;//Input.GetAxis ("CursorHorizontal");
+			float yAxisCursor = tentacleJoystick.position.y;//Input.GetAxis ("CursorVertical");
 			
 			rigidbody2D.angularVelocity = 0.0f;
 			

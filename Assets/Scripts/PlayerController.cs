@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
+	public Joystick moveJoystick;
+	
 	public float speed = 15.0f;
 	public float jetMultiplier = 5.0f;
 	
@@ -16,7 +18,7 @@ public class PlayerController : MonoBehaviour {
 	public GameObject leftTentacle;
 	public GameObject rightTentacle;
 	public GameObject legs;
-	public ParticleSystem particleSystem;
+	public ParticleSystem boostParticles;
 	
 	public bool isBoosting = false;
 	private int timeSinceBoost = 0;
@@ -53,8 +55,8 @@ public class PlayerController : MonoBehaviour {
 			
 			// Get the horizontal and vertical axis.
 			// The value is in the range -1 to 1
-			float xAxis = Input.GetAxis ("Horizontal");
-			float yAxis = Input.GetAxis ("Vertical");
+			float xAxis = moveJoystick.position.x;//Input.GetAxis ("Horizontal");
+			float yAxis = moveJoystick.position.y;//Input.GetAxis ("Vertical");
 			
 			if (inWater){
 				float jetSpeed = speed;
@@ -64,11 +66,11 @@ public class PlayerController : MonoBehaviour {
 					gameController.RemoveFromBoost(1);
 					timeSinceBoost = 0;
 					
-					particleSystem.Play();
+					boostParticles.Play();
 				}
 				else {
 					isBoosting = false;
-					particleSystem.Stop();
+					boostParticles.Stop();
 					if (timeSinceBoost >= 30){
 						if (gameController.GetBoost() < 100){
 							gameController.AddToBoost(1);
@@ -88,7 +90,7 @@ public class PlayerController : MonoBehaviour {
 			
 			else {
 				SetGravityForAll(1.0f);
-				particleSystem.Stop();
+				boostParticles.Stop();
 			}
 			
 			// Rotation
