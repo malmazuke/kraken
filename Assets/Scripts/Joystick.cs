@@ -1,8 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/**
+ * Joystick.cs
+ *
+ * Mark Feaver
+ * Based on Penelope iPhone Tutorial
+ *
+ * Joystick creates a moveable joystick (via GUITexture) that 
+ * handles touch input, taps, and phases.
+ */
 [RequireComponent (typeof (GUITexture))]
-public class Joystick : MonoBehaviour {
+public class Joystick : TouchControl {
 		
 	// A simple class for bounding how far the GUITexture will move
 	class Boundary
@@ -11,29 +20,16 @@ public class Joystick : MonoBehaviour {
 		public Vector2 max = Vector2.zero;
 	}
 	
-	static private Joystick[] joysticks;						// A static collection of all joysticks
-	static private bool enumeratedJoysticks = false;
-	static private float tapTimeDelta = 0.3f;					// Time allowed between taps
-	
-	public bool touchPad; 												// Is this a TouchPad?
-	public Rect touchZone;
-	public Vector2 deadZone = Vector2.zero;							// Control when position is output
-	public bool normalize = false;			 							// Normalize output after the dead-zone?
-	public Vector2 position;		 									// [-1, 1] in x,y
-	public int tapCount;												// Current tap count
-	
-	private int lastFingerId = -1;								// Finger last used for this joystick
-	private float tapTimeWindow;								// How much time there is left for a tap to occur
+	public bool touchPad; 										// Is this a TouchPad?
+	public Vector2 deadZone = Vector2.zero;						// Control when position is output
+	public bool normalize = false;			 					// Normalize output after the dead-zone?
+	public Vector2 position;	 								// [-1, 1] in x,y
+
 	private Vector2 fingerDownPos;
 	
-	private GUITexture gui;										// Joystick graphic
-	private Rect defaultRect;									// Default position / extents of the joystick graphic
-	private Boundary guiBoundary = new Boundary();					// Boundary for joystick graphic
-	private Vector2 guiTouchOffset;								// Offset to apply to touch input
-	private Vector2 guiCenter;									// Center of joystick
+	private Boundary guiBoundary = new Boundary();				// Boundary for joystick graphic
 	
-	void Start()
-	{
+	void Start() {
 		// Cache this component at startup instead of looking up every frame	
 		gui = GetComponent<GUITexture>();
 		
@@ -70,44 +66,21 @@ public class Joystick : MonoBehaviour {
 		}
 	}
 	
-	public void Disable()
-	{
-		gameObject.SetActive(false);
-		enumeratedJoysticks = false;
-	}
-	
-	void ResetJoystick()
-	{
-		// Release the finger control and set the joystick back to the default position
-		gui.pixelInset = defaultRect;
-		lastFingerId = -1;
+	protected override void Reset() {
+		base.Reset();
 		position = Vector2.zero;
 		fingerDownPos = Vector2.zero;
 		
 		if ( touchPad )
 			gui.color = new Color() { a = 0.025f };
-			
 	}
 	
-	bool IsFingerDown()
-	{
-		return (lastFingerId != -1);
-	}
-	
-	public void LatchedFinger(int fingerId)
-	{
-		// If another joystick has latched this finger, then we must release it
-		if ( lastFingerId == fingerId )
-			ResetJoystick();
-	}
-	
-	void Update()
-	{	
-		if ( !enumeratedJoysticks )
+	void Update() {	
+		if ( !enumeratedControls )
 		{
-			// Collect all joysticks in the game, so we can relay finger latching messages
-			joysticks = FindObjectsOfType( typeof(Joystick) ) as Joystick[];
-			enumeratedJoysticks = true;
+			// Collect all touch controls in the game, so we can relay finger latching messages
+			controls = FindObjectsOfType( typeof(TouchControl) ) as TouchControl[];
+			enumeratedControls = true;
 		}	
 		
 		var count = Input.touchCount;
@@ -119,7 +92,7 @@ public class Joystick : MonoBehaviour {
 			tapCount = 0;
 		
 		if ( count == 0 )
-			ResetJoystick();
+			Reset();
 		else
 		{
 			for(int i = 0;i < count; i++)
@@ -161,11 +134,11 @@ public class Joystick : MonoBehaviour {
 						tapTimeWindow = tapTimeDelta;
 					}
 					
-					// Tell other joysticks we've latched this finger
-					foreach ( Joystick j in joysticks )
+					// Tell other controls we've latched this finger
+					foreach ( TouchControl control in controls )
 					{
-						if ( j != this )
-							j.LatchedFinger( touch.fingerId );
+						if ( control != this )
+							control.LatchedFinger( touch.fingerId );
 					}						
 				}				
 				
@@ -196,7 +169,7 @@ public class Joystick : MonoBehaviour {
 					}
 					
 					if ( touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled )
-						ResetJoystick();					
+						Reset();					
 				}			
 			}
 		}

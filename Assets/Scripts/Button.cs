@@ -11,25 +11,11 @@ using System.Collections;
  * handles touch input, taps, and phases.
  */
 [RequireComponent (typeof (GUITexture))]
-public class Button : MonoBehaviour {
-
-	static private Joystick[] joysticks;						// A static collection of all joysticks
-	static private bool enumeratedJoysticks = false;
-	static private float tapTimeDelta = 0.3f;					// Time allowed between taps
+public class Button : TouchControl {
 	
-	public Rect touchZone;
-	public bool isPressed;
-	public int tapCount;										// Current tap count
+	public bool isPressed;										// Is the button currently pressed
 	
-	private int lastFingerId = -1;								// Finger last used for this joystick
-	private float tapTimeWindow;								// How much time there is left for a tap to occur
 	private float fingerDownTime;
-	
-	private GUITexture gui;										// Joystick graphic
-	private Rect defaultRect;									// Default position / extents of the joystick graphic
-	private Vector2 guiTouchOffset;								// Offset to apply to touch input
-	private Vector2 guiCenter;									// Center of joystick
-	
 	
 	// Use this for initialization
 	void Start () {
@@ -54,35 +40,18 @@ public class Button : MonoBehaviour {
 		guiCenter.y = defaultRect.y + guiTouchOffset.y;
 	}
 	
-	public void Disable () {
-		gameObject.SetActive(false);
-		enumeratedJoysticks = false;
-	}
-	
-	void ResetButton() {
-		// Release the finger control and set the joystick back to the default position
-		gui.pixelInset = defaultRect;
-		lastFingerId = -1;
+	protected override void Reset() {
+		base.Reset();
 		isPressed = false;
-	}
-	
-	bool IsFingerDown() {
-		return (lastFingerId != -1);
-	}
-	
-	public void LatchedFinger( int fingerId ) {
-		// If another joystick has latched this finger, then we must release it
-		if ( lastFingerId == fingerId )
-			ResetButton();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if ( !enumeratedJoysticks )
+		if ( !enumeratedControls )
 		{
 			// Collect all joysticks in the game, so we can relay finger latching messages
-			joysticks = FindObjectsOfType(typeof(Joystick)) as Joystick[];
-			enumeratedJoysticks = true;
+			controls = FindObjectsOfType(typeof(Joystick)) as Joystick[];
+			enumeratedControls = true;
 		}	
 		
 		int count = Input.touchCount;
@@ -94,7 +63,7 @@ public class Button : MonoBehaviour {
 			tapCount = 0;
 		
 		if ( count == 0 )
-			ResetButton();
+			Reset();
 		else
 		{
 			for(int i = 0;i < count; i++)
@@ -123,10 +92,10 @@ public class Button : MonoBehaviour {
 					}
 					
 					// Tell other joysticks we've latched this finger
-					foreach ( Joystick j in joysticks )
+					foreach ( TouchControl control in controls )
 					{
-						if ( j != this )
-							j.LatchedFinger( touch.fingerId );
+						if ( control != this )
+							control.LatchedFinger( touch.fingerId );
 					}						
 				}				
 				
@@ -141,7 +110,7 @@ public class Button : MonoBehaviour {
 					isPressed = true;
 					
 					if ( touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled )
-						ResetButton();					
+						Reset();					
 				}			
 			}
 		}
