@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
 	public Joystick moveJoystick;
+	public Button boostButton;
 	
 	public float speed = 15.0f;
 	public float jetMultiplier = 5.0f;
@@ -60,7 +61,7 @@ public class PlayerController : MonoBehaviour {
 			
 			if (inWater){
 				float jetSpeed = speed;
-				if (Input.GetButton("Boost") && gameController.GetBoost() > 0){
+				if (boostButton.isPressed && gameController.GetBoost() > 0){
 					jetSpeed = speed * jetMultiplier;
 					isBoosting = true;
 					gameController.RemoveFromBoost(1);
