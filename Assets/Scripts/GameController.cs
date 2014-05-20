@@ -43,7 +43,9 @@ public class GameController : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (Input.GetButtonDown("Start")){
+		if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began){
+//			Vector2 pos = Input.GetTouch(0).position;
+			
 			if (isTitleShowing){
 				isTitleShowing = false;
 				
