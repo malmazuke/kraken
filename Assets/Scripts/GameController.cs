@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour {
 	public GUIText boostLabel;
 	public GUIText boostDescrLabel;
 	public GUIText finalScoreLabel;
+	public GUIText newHighScoreLabel;
+	public GUIText highScoreLabel;
 	public GameObject titleLabels;
 	public GameObject gameoverLabels;
 	public AudioClip beginGameClip;
@@ -22,7 +24,7 @@ public class GameController : MonoBehaviour {
 	private int health;
 	private int boost;
 	private int score;
-//	private int highScore;
+	private int highScore;
 	
 	private bool isDead = false;
 	
@@ -31,7 +33,7 @@ public class GameController : MonoBehaviour {
 		health = initialHealth;
 		boost = maxBoost;
 		score = 0;
-//		highScore = 0;
+		highScore = PlayerPrefs.GetInt("HighScore");
 		
 		SetGameplayLabelsVisible(false);
 		SetTitleLabelsVisible(true);
@@ -70,6 +72,16 @@ public class GameController : MonoBehaviour {
 			SetGameoverLabelsVisible(true);
 //			SetMusicPlaying(false);
 			finalScoreLabel.text = "Your Score: " + score;
+			
+			// Set the highscore
+			if (score > highScore) {
+				highScore = score;
+				PlayerPrefs.SetInt("HighScore", highScore);
+				newHighScoreLabel.text = "New High Score!";
+			}
+			else {
+				newHighScoreLabel.text = "";
+			}
 		}
 	}
 	
@@ -143,6 +155,13 @@ public class GameController : MonoBehaviour {
 	void SetTitleLabelsVisible (bool areVisible){
 		if (areVisible){
 			titleLabels.transform.position = new Vector3(0.05f, 0.1f);
+			// If we've got a high score, display it
+			if (highScore != 0){
+				highScoreLabel.text = "High Score: " + highScore;
+			}
+			else {
+				highScoreLabel.text = "";
+			}
 		}
 		else {
 			titleLabels.transform.position = new Vector3(-1.0f, -1.0f);
