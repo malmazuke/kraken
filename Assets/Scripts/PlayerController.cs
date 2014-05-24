@@ -60,14 +60,25 @@ public class PlayerController : MonoBehaviour {
 			float yAxis = moveJoystick.position.y;//Input.GetAxis ("Vertical");
 			
 			if (inWater){
-				float jetSpeed = speed;
+				// Move in direction
+				float moveX = xAxis * speed * Time.deltaTime;
+				float moveY = yAxis * speed * Time.deltaTime;
+			
+				rigidbody2D.AddForce (new Vector3 (moveX, moveY, 0.0f));
+				
+				// Boost
+//				float jetSpeed = speed;
 				if (boostButton.isPressed && gameController.GetBoost() > 0){
-					jetSpeed = speed * jetMultiplier;
+//					jetSpeed = speed * jetMultiplier;
 					isBoosting = true;
 					gameController.RemoveFromBoost(1);
 					timeSinceBoost = 0;
 					
 					boostParticles.Play();
+					
+					// Add boost vector
+					Vector3 boostVector = transform.up * (jetMultiplier * speed) * Time.deltaTime;
+					rigidbody2D.AddForce(boostVector);
 				}
 				else {
 					isBoosting = false;
@@ -81,11 +92,7 @@ public class PlayerController : MonoBehaviour {
 						timeSinceBoost += 1;
 					}
 				}
-				float moveX = xAxis * jetSpeed * Time.deltaTime;
-				float moveY = yAxis * jetSpeed * Time.deltaTime;
-			
-				rigidbody2D.AddForce (new Vector3 (moveX, moveY, 0.0f));
-				
+//				
 				SetGravityForAll(0.01f);
 			}
 			
