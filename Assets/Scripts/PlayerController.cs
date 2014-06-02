@@ -51,13 +51,19 @@ public class PlayerController : MonoBehaviour {
 		
 		// If we're still alive, do stuff
 		if (!gameController.isPlayerDead()){
-			//set our inWater bool
+			// Set our inWater bool
 			inWater = Physics2D.OverlapCircle (waterCheck.position, waterRadius, whatIsWater);
 			
 			// Get the horizontal and vertical axis.
 			// The value is in the range -1 to 1
-			float xAxis = moveJoystick.position.x;//Input.GetAxis ("Horizontal");
-			float yAxis = moveJoystick.position.y;//Input.GetAxis ("Vertical");
+			float xAxis = moveJoystick.position.x;
+			float yAxis = moveJoystick.position.y;
+			
+			// If we're on a PC, etc, use the standard axis
+			if (gameController.isRunningInEditor()) {
+				xAxis = Input.GetAxis ("Horizontal");
+				yAxis = Input.GetAxis ("Vertical");
+			}
 			
 			if (inWater){
 				// Move in direction
@@ -67,9 +73,16 @@ public class PlayerController : MonoBehaviour {
 				rigidbody2D.AddForce (new Vector3 (moveX, moveY, 0.0f));
 				
 				// Boost
-//				float jetSpeed = speed;
-				if (boostButton.isPressed && gameController.GetBoost() > 0){
-//					jetSpeed = speed * jetMultiplier;
+				
+				bool boostPressed = boostButton.isPressed;
+				// If running in the editor, use the keyboard boost button
+				if (gameController.isRunningInEditor()){
+					if (Input.GetButton("Boost")){
+						boostPressed = true;
+					}
+				}
+				
+				if (boostPressed && gameController.GetBoost() > 0){
 					isBoosting = true;
 					gameController.RemoveFromBoost(1);
 					timeSinceBoost = 0;
