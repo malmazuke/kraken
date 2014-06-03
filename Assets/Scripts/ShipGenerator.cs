@@ -7,14 +7,16 @@ public class ShipGenerator : MonoBehaviour {
 	public GameObject largeShip;
 	public float smallShipFrequency = 10.0f;
 	public float largeShipFrequency = 30.0f;
+	public float smallShipDelay = 0.0f;
+	public float largeShipDelay = 5.0f;
 	
 	private float currentFireRateModifier = 1.0f;
 	private float currentShipMoveSpeedModifier = 1.0f;
 	
 	// Use this for initialization
 	void Start () {
-		InvokeRepeating("GenerateSmallShip", 0.0f, smallShipFrequency);
-		InvokeRepeating("GenerateLargeShip", 30.0f, largeShipFrequency);
+		InvokeRepeating("GenerateSmallShip", smallShipDelay, smallShipFrequency);
+		InvokeRepeating("GenerateLargeShip", largeShipDelay, largeShipFrequency);
 		InvokeRepeating ("DecreaseSmallSpawnRate", 20.0f, 40.0f);
 		InvokeRepeating ("DecreaseLargeSpawnRate", 50.0f, 50.0f);
 	}
@@ -34,7 +36,7 @@ public class ShipGenerator : MonoBehaviour {
 			direction = "right";
 		}
 		
-		float startX = (direction == "left") ? 70.0f + transform.position.x: -70.0f + transform.position.x;
+		float startX = (direction == "left") ? 20.0f + transform.position.x: -20.0f + transform.position.x;
 		GameObject ship = (GameObject)Instantiate(smallShip, new Vector3(startX, 0.5f, 0.0f), Quaternion.identity);
 		
 		ShipMovement shipMovement = ship.GetComponent <ShipMovement>();
@@ -56,7 +58,7 @@ public class ShipGenerator : MonoBehaviour {
 			direction = "right";
 		}
 		
-		float startX = (direction == "left") ? 70.0f + transform.position.x: -70.0f + transform.position.x;
+		float startX = (direction == "left") ? 20.0f + transform.position.x: -20.0f + transform.position.x;
 		GameObject ship = (GameObject)Instantiate(largeShip, new Vector3(startX, 0.5f, 0.0f), Quaternion.identity);
 		
 		ShipMovement shipMovement = ship.GetComponent <ShipMovement>();

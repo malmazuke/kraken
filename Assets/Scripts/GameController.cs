@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour {
 	public AudioClip beginGameClip;
 	public AudioClip gameoverClip;
 	
-	public GameObject shipGenerator;
+	public GameObject playerBody;
 	
 	public bool isTitleShowing = true;
 	
@@ -43,7 +43,7 @@ public class GameController : MonoBehaviour {
 //		SetMusicPlaying(false);
 		
 		// Stop ships from generating
-		shipGenerator.GetComponent <ShipGenerator>().enabled = false;
+		GetComponent <ShipGenerator>().enabled = false;
 	}
 	
 	void Update () {
@@ -57,7 +57,7 @@ public class GameController : MonoBehaviour {
 				titleLabels.transform.position = new Vector3(-1, -1);
 				SetGameplayLabelsVisible(true);
 				
-				shipGenerator.GetComponent <ShipGenerator>().enabled = true;
+				GetComponent <ShipGenerator>().enabled = true;
 				
 				if (beginGameClip != null){
 				 	AudioSource.PlayClipAtPoint(beginGameClip, Vector3.zero);
@@ -84,6 +84,10 @@ public class GameController : MonoBehaviour {
 			else {
 				newHighScoreLabel.text = "";
 			}
+		}
+		else {
+			Vector2 temp = transform.position;
+			transform.position = new Vector2(playerBody.transform.position.x, temp.y);
 		}
 	}
 	
