@@ -11,15 +11,17 @@ public class WaterGravity : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		//set our inWater bool
-		inWater = (transform.position.y <= yPositionWater);
-		
-		if (inWater){
+		// If we're in the water, set our gravity scale to less
+		if (isInWater()){
 			rigidbody2D.gravityScale = gravityInWater;
 		}
 		
 		else {
 			rigidbody2D.gravityScale = gravityOutWater;
 		}
+	}
+	
+	public bool isInWater() {
+		return (transform.position.y <= yPositionWater);
 	}
 }

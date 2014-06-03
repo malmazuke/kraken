@@ -6,12 +6,10 @@ public class PlayerController : MonoBehaviour {
 	public Joystick moveJoystick;
 	public Button boostButton;
 	
+	public float yPositionWater = 0.0f;
 	public float speed = 15.0f;
 	public float jetMultiplier = 5.0f;
 	
-	bool inWater = false;
-	float waterRadius = 0.2f;
-	public Transform waterCheck;
 	public LayerMask whatIsWater;
 	
 	public AudioClip playerHitClip;
@@ -37,6 +35,7 @@ public class PlayerController : MonoBehaviour {
 		{
 			Debug.Log ("Cannot find 'GameController' script");
 		}
+		
 	}
 	
 	void Update () {
@@ -51,9 +50,7 @@ public class PlayerController : MonoBehaviour {
 		
 		// If we're still alive, do stuff
 		if (!gameController.isPlayerDead()){
-			// Set our inWater bool
-			inWater = Physics2D.OverlapCircle (waterCheck.position, waterRadius, whatIsWater);
-			
+		
 			// Get the horizontal and vertical axis.
 			// The value is in the range -1 to 1
 			float xAxis = moveJoystick.position.x;
@@ -65,7 +62,8 @@ public class PlayerController : MonoBehaviour {
 				yAxis = Input.GetAxis ("Vertical");
 			}
 			
-			if (inWater){
+			// If we're in the water, allow movement
+			if (isInWater()){
 				// Move in direction
 				float moveX = xAxis * speed * Time.deltaTime;
 				float moveY = yAxis * speed * Time.deltaTime;
@@ -73,7 +71,6 @@ public class PlayerController : MonoBehaviour {
 				rigidbody2D.AddForce (new Vector3 (moveX, moveY, 0.0f));
 				
 				// Boost
-				
 				bool boostPressed = boostButton.isPressed;
 				// If running in the editor, use the keyboard boost button
 				if (gameController.isRunningInEditor()){
@@ -161,5 +158,9 @@ public class PlayerController : MonoBehaviour {
 	
 	void Die () {
 		Destroy(gameObject, 0.1f);
+	}
+	
+	bool isInWater() {
+		return (transform.position.y <= yPositionWater);
 	}
 }
