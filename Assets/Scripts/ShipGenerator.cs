@@ -34,7 +34,7 @@ public class ShipGenerator : MonoBehaviour {
 			direction = "right";
 		}
 		
-		float startX = (direction == "left") ? 70.0f: -70.0f;
+		float startX = (direction == "left") ? 70.0f + transform.position.x: -70.0f + transform.position.x;
 		GameObject ship = (GameObject)Instantiate(smallShip, new Vector3(startX, 0.5f, 0.0f), Quaternion.identity);
 		
 		ShipMovement shipMovement = ship.GetComponent <ShipMovement>();
@@ -56,7 +56,7 @@ public class ShipGenerator : MonoBehaviour {
 			direction = "right";
 		}
 		
-		float startX = (direction == "left") ? 70.0f: -70.0f;
+		float startX = (direction == "left") ? 70.0f + transform.position.x: -70.0f + transform.position.x;
 		GameObject ship = (GameObject)Instantiate(largeShip, new Vector3(startX, 0.5f, 0.0f), Quaternion.identity);
 		
 		ShipMovement shipMovement = ship.GetComponent <ShipMovement>();
