@@ -22,8 +22,8 @@ public class FollowPlayerX : MonoBehaviour {
 	// Follow the player on the X axis
 	void Update () {
 		if (!gameController.isPlayerDead()){ // If we're still alive, follow
-			Vector2 temp = transform.position;
-			transform.position = new Vector2(playerBody.transform.position.x, temp.y);
+			Vector3 temp = transform.position;
+			transform.position = new Vector3(playerBody.transform.position.x, temp.y, temp.z);
 		}
 	}
 }
