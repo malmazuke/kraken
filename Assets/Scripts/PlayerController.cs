@@ -6,13 +6,9 @@ public class PlayerController : MonoBehaviour {
 	public Joystick moveJoystick;
 	public Button boostButton;
 	
+	public float yPositionWater = 0.0f;
 	public float speed = 15.0f;
 	public float jetMultiplier = 5.0f;
-	
-	bool inWater = false;
-	float waterRadius = 0.2f;
-	public Transform waterCheck;
-	public LayerMask whatIsWater;
 	
 	public AudioClip playerHitClip;
 	
@@ -51,8 +47,6 @@ public class PlayerController : MonoBehaviour {
 		
 		// If we're still alive, do stuff
 		if (!gameController.isPlayerDead()){
-			//set our inWater bool
-			inWater = Physics2D.OverlapCircle (waterCheck.position, waterRadius, whatIsWater);
 			
 			// Get the horizontal and vertical axis.
 			// The value is in the range -1 to 1
@@ -65,7 +59,8 @@ public class PlayerController : MonoBehaviour {
 				yAxis = Input.GetAxis ("Vertical");
 			}
 			
-			if (inWater){
+			// If we're in the water, allow movement
+			if (isInWater()){
 				// Move in direction
 				float moveX = xAxis * speed * Time.deltaTime;
 				float moveY = yAxis * speed * Time.deltaTime;
@@ -82,7 +77,6 @@ public class PlayerController : MonoBehaviour {
 				}
 				
 				if (boostPressed && gameController.GetBoost() > 0){
-//					jetSpeed = speed * jetMultiplier;
 					isBoosting = true;
 					gameController.RemoveFromBoost(1);
 					timeSinceBoost = 0;
@@ -105,7 +99,7 @@ public class PlayerController : MonoBehaviour {
 						timeSinceBoost += 1;
 					}
 				}
-//				
+				
 				SetGravityForAll(0.01f);
 			}
 			
@@ -161,5 +155,9 @@ public class PlayerController : MonoBehaviour {
 	
 	void Die () {
 		Destroy(gameObject, 0.1f);
+	}
+	
+	bool isInWater() {
+		return (transform.position.y <= yPositionWater);
 	}
 }
