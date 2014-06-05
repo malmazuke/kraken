@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class GameController : MonoBehaviour {
@@ -18,6 +18,8 @@ public class GameController : MonoBehaviour {
 	public GameObject gameoverLabels;
 	public AudioClip beginGameClip;
 	public AudioClip gameoverClip;
+	
+	public GameObject playerBody;
 	
 	public bool isTitleShowing = true;
 	
@@ -45,8 +47,8 @@ public class GameController : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began || Input.GetButtonDown("Start")){
-//			Vector2 pos = Input.GetTouch(0).position;
+		// If the player touches the screen, or presses the Start button (enter/return)
+		if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || Input.GetButtonDown("Start")){
 			
 			if (isTitleShowing){
 				isTitleShowing = false;
@@ -82,6 +84,10 @@ public class GameController : MonoBehaviour {
 			else {
 				newHighScoreLabel.text = "";
 			}
+		}
+		else {
+			Vector2 temp = transform.position;
+			transform.position = new Vector2(playerBody.transform.position.x, temp.y);
 		}
 	}
 	

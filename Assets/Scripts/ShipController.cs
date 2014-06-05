@@ -72,9 +72,16 @@ public class ShipController : MonoBehaviour {
 				}
 			}	
 		}
-		// If ship goes out of bounds, destroy it
-		if (other.gameObject.tag == "Destroyer"){
-			Destroy(gameObject);
+		// If ship goes out of bounds, wrap it to the other side
+		if (other.gameObject.tag == "WrapL"){
+			GameObject wrapR = GameObject.FindWithTag("WrapR");
+			Vector2 tempPos = transform.position;
+			transform.position = new Vector2(wrapR.transform.position.x-5.0f, tempPos.y);
+		}
+		else if (other.gameObject.tag == "WrapR"){
+			GameObject wrapL = GameObject.FindWithTag("WrapL");
+			Vector2 tempPos = transform.position;
+			transform.position = new Vector2(wrapL.transform.position.x+5.0f, tempPos.y);
 		}
 	}
 	
