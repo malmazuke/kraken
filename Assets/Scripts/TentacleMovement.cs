@@ -26,8 +26,14 @@ public class TentacleMovement : MonoBehaviour {
 			// Tentacle Movement
 			// Get the horizontal and vertical axis.
 			// The value is in the range -1 to 1
-			float xAxisCursor = tentacleJoystick.position.x;//Input.GetAxis ("CursorHorizontal");
-			float yAxisCursor = tentacleJoystick.position.y;//Input.GetAxis ("CursorVertical");
+			float xAxisCursor = tentacleJoystick.position.x;
+			float yAxisCursor = tentacleJoystick.position.y;
+			
+			// If we're on a PC, etc, use the standard axis
+			if (gameController.isRunningInEditor()) {
+				xAxisCursor = Input.GetAxis ("CursorHorizontal");
+				yAxisCursor = Input.GetAxis ("CursorVertical");
+			}
 			
 			rigidbody2D.angularVelocity = 0.0f;
 			

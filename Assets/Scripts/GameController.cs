@@ -45,7 +45,7 @@ public class GameController : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began){
+		if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began || Input.GetButtonDown("Start")){
 //			Vector2 pos = Input.GetTouch(0).position;
 			
 			if (isTitleShowing){
@@ -184,5 +184,12 @@ public class GameController : MonoBehaviour {
 //		else {
 //			audio.Stop();
 //		}
+	}
+	
+	public bool isRunningInEditor() {
+		if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor){
+			return true;
+		}
+		return false;
 	}
 }
