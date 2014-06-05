@@ -17,15 +17,7 @@ public class ShipController : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		GameObject gameControllerObject = GameObject.FindWithTag ("GameController");
-		if (gameControllerObject != null)
-		{
-			gameController = gameControllerObject.GetComponent <GameController>();
-		}
-		if (gameController == null)
-		{
-			Debug.Log ("Cannot find 'GameController' script");
-		}
+		gameController = GameController.sharedGameController();
 		
 		currentHealth = startingHealth;
 		
@@ -44,6 +36,7 @@ public class ShipController : MonoBehaviour {
 		Destroy(gameObject);
 		AudioSource.PlayClipAtPoint(deathSound, transform.position);
 		gameController.AddScore(killScore);
+		gameController.ShipDestroyed();
 	}
 	
 //	void OnCollisionEnter (Collision col) {

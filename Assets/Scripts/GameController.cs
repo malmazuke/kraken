@@ -19,9 +19,13 @@ public class GameController : MonoBehaviour {
 	public AudioClip beginGameClip;
 	public AudioClip gameoverClip;
 	
+	public bool isTitleShowing = true;
+	
 	public GameObject playerBody;
 	
-	public bool isTitleShowing = true;
+	/********* SHIPS *********/
+	public int maxNumberOfShips = 100;
+	private int numberOfShips = 0;
 	
 	private int health;
 	private int boost;
@@ -95,6 +99,24 @@ public class GameController : MonoBehaviour {
 		return isDead;
 	}
 	
+	// ***************** SHIPS ***************** //	
+	public bool CanGenerateShip(){
+		return (numberOfShips < maxNumberOfShips);
+	}
+	
+	public void ShipCreated(){
+		numberOfShips++;
+	}
+	
+	public void ShipDestroyed(){
+		numberOfShips--;
+	}
+	
+	public int getNumberOfTotalShips(){
+		return numberOfShips;
+	}
+	
+	// ***************** PLAYER ***************** //
 	public void RemoveHealth(int healthToRemove){
 		health -= healthToRemove;
 		if (health <= 0){
@@ -197,5 +219,12 @@ public class GameController : MonoBehaviour {
 			return true;
 		}
 		return false;
+	}
+	
+	public static GameController sharedGameController(){
+		GameObject gameControllerObject = GameObject.FindWithTag ("GameController");
+		GameController gameController = gameControllerObject.GetComponent <GameController>();
+		
+		return gameController;
 	}
 }

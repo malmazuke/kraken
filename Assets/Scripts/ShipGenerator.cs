@@ -3,18 +3,20 @@ using System.Collections;
 
 public class ShipGenerator : MonoBehaviour {
 
+	public GameController gameController;
 	public GameObject smallShip;
 	public GameObject largeShip;
 	public float smallShipFrequency = 10.0f;
 	public float largeShipFrequency = 30.0f;
 	public float smallShipDelay = 0.0f;
 	public float largeShipDelay = 5.0f;
-	
 	private float currentFireRateModifier = 1.0f;
 	private float currentShipMoveSpeedModifier = 1.0f;
 	
 	// Use this for initialization
 	void Start () {
+		gameController = GameController.sharedGameController();
+		
 		InvokeRepeating("GenerateSmallShip", smallShipDelay, smallShipFrequency);
 		InvokeRepeating("GenerateLargeShip", largeShipDelay, largeShipFrequency);
 		InvokeRepeating ("DecreaseSmallSpawnRate", 20.0f, 40.0f);
@@ -27,45 +29,53 @@ public class ShipGenerator : MonoBehaviour {
 	}
 	
 	void GenerateSmallShip() {
-		string direction;
-		float randVal = Random.value;
-		if (randVal < 0.5){
-			direction = "left";
+		if (gameController.CanGenerateShip()){
+			string direction;
+			float randVal = Random.value;
+			if (randVal < 0.5){
+				direction = "left";
+			}
+			else{
+				direction = "right";
+			}
+			
+			float startX = (direction == "left") ? 20.0f + transform.position.x: -20.0f + transform.position.x;
+			GameObject ship = (GameObject)Instantiate(smallShip, new Vector3(startX, 0.5f, 0.0f), Quaternion.identity);
+			
+			ShipMovement shipMovement = ship.GetComponent <ShipMovement>();
+			shipMovement.SetDirection(direction);
+			shipMovement.speed = shipMovement.speed * currentShipMoveSpeedModifier;
+			
+			ShipCannonFire shipFire = ship.GetComponent <ShipCannonFire>();
+			shipFire.player = GameObject.FindWithTag ("PlayerBody");
+			shipFire.fireSpeed = shipFire.fireSpeed * currentFireRateModifier;
+			
+			gameController.ShipCreated();
 		}
-		else{
-			direction = "right";
-		}
-		
-		float startX = (direction == "left") ? 20.0f + transform.position.x: -20.0f + transform.position.x;
-		GameObject ship = (GameObject)Instantiate(smallShip, new Vector3(startX, 0.5f, 0.0f), Quaternion.identity);
-		
-		ShipMovement shipMovement = ship.GetComponent <ShipMovement>();
-		shipMovement.SetDirection(direction);
-		shipMovement.speed = shipMovement.speed * currentShipMoveSpeedModifier;
-		
-		ShipCannonFire shipFire = ship.GetComponent <ShipCannonFire>();
-		shipFire.player = GameObject.FindWithTag ("PlayerBody");
-		shipFire.fireSpeed = shipFire.fireSpeed * currentFireRateModifier;
 	}
 	
 	void GenerateLargeShip() {
-		string direction;
-		float randVal = Random.value;
-		if (randVal < 0.5){
-			direction = "left";
+		if (gameController.CanGenerateShip()){
+			string direction;
+			float randVal = Random.value;
+			if (randVal < 0.5){
+				direction = "left";
+			}
+			else{
+				direction = "right";
+			}
+			
+			float startX = (direction == "left") ? 20.0f + transform.position.x: -20.0f + transform.position.x;
+			GameObject ship = (GameObject)Instantiate(largeShip, new Vector3(startX, 0.5f, 0.0f), Quaternion.identity);
+			
+			ShipMovement shipMovement = ship.GetComponent <ShipMovement>();
+			shipMovement.SetDirection(direction);
+			
+			ShipCannonFire shipFire = ship.GetComponent <ShipCannonFire>();
+			shipFire.player = GameObject.FindWithTag ("PlayerBody");
+			
+			gameController.ShipCreated();
 		}
-		else{
-			direction = "right";
-		}
-		
-		float startX = (direction == "left") ? 20.0f + transform.position.x: -20.0f + transform.position.x;
-		GameObject ship = (GameObject)Instantiate(largeShip, new Vector3(startX, 0.5f, 0.0f), Quaternion.identity);
-		
-		ShipMovement shipMovement = ship.GetComponent <ShipMovement>();
-		shipMovement.SetDirection(direction);
-		
-		ShipCannonFire shipFire = ship.GetComponent <ShipCannonFire>();
-		shipFire.player = GameObject.FindWithTag ("PlayerBody");
 	}
 	
 	void DecreaseSmallSpawnRate () {
