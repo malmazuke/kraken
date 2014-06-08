@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour {
 	public GUIText highScoreLabel;
 	public GameObject titleLabels;
 	public GameObject gameoverLabels;
+	public GameObject minimap;
 	public AudioClip beginGameClip;
 	public AudioClip gameoverClip;
 	
@@ -56,9 +57,9 @@ public class GameController : MonoBehaviour {
 			
 			if (isTitleShowing){
 				isTitleShowing = false;
-				
+								
 				//Update the labels on screen
-				titleLabels.transform.position = new Vector3(-1, -1);
+				SetTitleLabelsVisible(false);
 				SetGameplayLabelsVisible(true);
 				
 				GetComponent <ShipGenerator>().enabled = true;
@@ -178,6 +179,8 @@ public class GameController : MonoBehaviour {
 		healthDescrLabel.enabled = areVisible;
 		boostLabel.enabled = areVisible;
 		boostDescrLabel.enabled = areVisible;
+		
+		SetMinimapVisible(areVisible);
 	}
 	
 	void SetTitleLabelsVisible (bool areVisible){
@@ -202,6 +205,15 @@ public class GameController : MonoBehaviour {
 		}
 		else {
 			gameoverLabels.transform.position = new Vector3(-1.0f, -1.0f);
+		}
+	}
+	
+	void SetMinimapVisible (bool areVisible) {
+		if (areVisible){
+			minimap.transform.position = new Vector3(0.0f, 0.0f);
+		}
+		else {
+			minimap.transform.position = new Vector3(-1.0f, -1.0f);
 		}
 	}
 	
