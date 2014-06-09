@@ -13,7 +13,6 @@ public class ShipGenerator : MonoBehaviour {
 	public float largeShipDelay = 5.0f;
 	private float currentFireRateModifier = 1.0f;
 	private float currentShipMoveSpeedModifier = 1.0f;
-	private List<GameObject> ships;
 	
 	// Use this for initialization
 	void Start () {
@@ -23,8 +22,6 @@ public class ShipGenerator : MonoBehaviour {
 		InvokeRepeating("GenerateLargeShip", largeShipDelay, largeShipFrequency);
 		InvokeRepeating ("DecreaseSmallSpawnRate", 20.0f, 40.0f);
 		InvokeRepeating ("DecreaseLargeSpawnRate", 50.0f, 50.0f);
-		
-		ships = new List<GameObject>(100);
 	}
 	
 	// Update is called once per frame
