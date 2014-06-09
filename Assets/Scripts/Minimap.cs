@@ -7,6 +7,7 @@ public class Minimap : MonoBehaviour {
 	public GUITexture minimapSky;
 	public GUITexture minimapWater;
 	public GUITexture minimapPlayer;
+	public GUITexture minimapSmallShip;
 	public float waterLinePosition = 6.0f;
 	public float waterScreenEdgePosition = 2.45f;
 	
@@ -42,6 +43,19 @@ public class Minimap : MonoBehaviour {
 			
 			height = totalWaterSkyHeight * normalizedYPosition * -1;
 			minimapSky.pixelInset = new Rect(minimapSky.pixelInset.x, minimapSky.pixelInset.y, minimapSky.pixelInset.width, height);
+			
+			if (normalizedYPosition < 1.0f || normalizedYPosition > 0.0f){
+				// for each small ship, add to minimap
+				GameObject[] gos;
+				gos = GameObject.FindGameObjectsWithTag("SmallShip");
+				
+				foreach (GameObject go in gos) {
+					Vector3 diff = go.transform.position - transform.position;
+					float curDistance = diff.sqrMagnitude;
+					
+					
+				}
+			}
 		}
 	}
 }

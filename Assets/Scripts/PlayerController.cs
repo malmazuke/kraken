@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour {
 	public GameObject rightTentacle;
 	public GameObject legs;
 	public ParticleSystem boostParticles;
+	public GameObject minimapIcon;
 	
 	public bool isBoosting = false;
 	private int timeSinceBoost = 0;
@@ -108,6 +109,9 @@ public class PlayerController : MonoBehaviour {
 				rigidbody2D.angularVelocity = 0.0f;
 				transform.rotation = Quaternion.Slerp(transform.rotation, desiredDirection, 0.2f);
 			}
+			
+			// Make sure that the minimap icon is always pointing north
+			minimapIcon.transform.rotation = Quaternion.identity;
 		}
 	}
 	

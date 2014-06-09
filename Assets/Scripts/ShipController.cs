@@ -69,12 +69,12 @@ public class ShipController : MonoBehaviour {
 		if (other.gameObject.tag == "WrapL"){
 			GameObject wrapR = GameObject.FindWithTag("WrapR");
 			Vector2 tempPos = transform.position;
-			transform.position = new Vector2(wrapR.transform.position.x-5.0f, tempPos.y);
+			transform.position = new Vector2(wrapR.transform.position.x-15.0f, tempPos.y);
 		}
 		else if (other.gameObject.tag == "WrapR"){
 			GameObject wrapL = GameObject.FindWithTag("WrapL");
 			Vector2 tempPos = transform.position;
-			transform.position = new Vector2(wrapL.transform.position.x+5.0f, tempPos.y);
+			transform.position = new Vector2(wrapL.transform.position.x+15.0f, tempPos.y);
 		}
 	}
 	

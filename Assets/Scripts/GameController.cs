@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour {
 	public GUIText highScoreLabel;
 	public GameObject titleLabels;
 	public GameObject gameoverLabels;
-	public GameObject minimap;
+	public Camera minimapCamera;
 	public AudioClip beginGameClip;
 	public AudioClip gameoverClip;
 	
@@ -32,6 +32,8 @@ public class GameController : MonoBehaviour {
 	private int boost;
 	private int score;
 	private int highScore;
+	
+	private Vector3 originalMinimapPosition;
 	
 	private bool isDead = false;
 	
@@ -209,12 +211,7 @@ public class GameController : MonoBehaviour {
 	}
 	
 	void SetMinimapVisible (bool areVisible) {
-		if (areVisible){
-			minimap.transform.position = new Vector3(0.0f, 0.0f);
-		}
-		else {
-			minimap.transform.position = new Vector3(-1.0f, -1.0f);
-		}
+		minimapCamera.enabled = areVisible;
 	}
 	
 	void SetMusicPlaying(bool shouldPlay){
