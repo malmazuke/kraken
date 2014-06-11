@@ -37,6 +37,11 @@ public class GameController : MonoBehaviour {
 	
 	private bool isDead = false;
 	
+	void Awake() {
+		// We want the fastest possible framerate
+		Application.targetFrameRate = -1;
+	}
+	
 	// Use this for initialization
 	void Start () {
 		health = initialHealth;
@@ -92,7 +97,7 @@ public class GameController : MonoBehaviour {
 				newHighScoreLabel.text = "";
 			}
 		}
-		else {
+		else if (!isPlayerDead()){
 			Vector2 temp = transform.position;
 			transform.position = new Vector2(playerBody.transform.position.x, temp.y);
 		}
