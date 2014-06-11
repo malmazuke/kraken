@@ -76,7 +76,7 @@ public class GameController : MonoBehaviour {
 				Application.LoadLevel("DefaultScene");
 			}
 		}
-		if (isPlayerDead()){
+		if (isPlayerDead() && !AreGameOverLabelsVisible()){
 			SetGameplayLabelsVisible(false);
 			SetGameoverLabelsVisible(true);
 //			SetMusicPlaying(false);
@@ -207,6 +207,15 @@ public class GameController : MonoBehaviour {
 		}
 		else {
 			gameoverLabels.transform.position = new Vector3(-1.0f, -1.0f);
+		}
+	}
+	
+	bool AreGameOverLabelsVisible () {
+		if (gameoverLabels.transform.position == new Vector3(0.05f, 0.1f)){
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 	
