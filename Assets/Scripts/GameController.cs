@@ -2,9 +2,8 @@ using UnityEngine;
 using System.Collections;
 
 public class GameController : MonoBehaviour {
-
-	public int initialHealth = 100;
-	public int maxBoost = 100;
+	
+	/********* LABELS *********/
 	public GUIText scoreDescrLabel;
 	public GUIText scoreLabel;
 	public GUIText healthLabel;
@@ -16,26 +15,30 @@ public class GameController : MonoBehaviour {
 	public GUIText highScoreLabel;
 	public GameObject titleLabels;
 	public GameObject gameoverLabels;
+	public bool isTitleShowing = true;
+	private Vector3 originalMinimapPosition;
+	
+	/********* CAMERA *********/
 	public Camera minimapCamera;
+	
+	/********* SHIPS *********/
 	public AudioClip beginGameClip;
 	public AudioClip gameoverClip;
 	
-	public bool isTitleShowing = true;
-	
+	/********* PLAYER *********/
+	public int initialHealth = 100;
+	public int maxBoost = 100;
 	public GameObject playerBody;
-	
-	/********* SHIPS *********/
-	public int maxNumberOfShips = 100;
-	private int numberOfShips = 0;
-	
 	private int health;
 	private int boost;
 	private int score;
 	private int highScore;
-	
-	private Vector3 originalMinimapPosition;
-	
 	private bool isDead = false;
+	private bool isPaused = false;
+	
+	/********* SHIPS *********/
+	public int maxNumberOfShips = 100;
+	private int numberOfShips = 0;
 	
 	void Awake() {
 		// We want the fastest possible framerate
@@ -100,6 +103,19 @@ public class GameController : MonoBehaviour {
 		else if (!isPlayerDead()){
 			Vector2 temp = transform.position;
 			transform.position = new Vector2(playerBody.transform.position.x, temp.y);
+		}
+		
+		// If player pauses the game
+		if (Input.GetKeyDown("p")){
+			// If we're currently not paused, pause. Otherwise, resume
+			if (!isPaused) {
+				Time.timeScale = 0.0f;
+			}
+			else {
+				Time.timeScale = 1.0f;
+			}
+			
+			isPaused = !isPaused;
 		}
 	}
 	

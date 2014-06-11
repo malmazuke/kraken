@@ -36,8 +36,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
-		
+	void FixedUpdate () {			
 		// If we're still alive, do stuff
 		if (!gameController.isPlayerDead()){
 			
