@@ -13,11 +13,11 @@ public class WaterGravity : MonoBehaviour {
 	void FixedUpdate () {
 		// If we're in the water, set our gravity scale to less
 		if (isInWater()){
-			rigidbody2D.gravityScale = gravityInWater;
+			GetComponent<Rigidbody2D>().gravityScale = gravityInWater;
 		}
 		
 		else {
-			rigidbody2D.gravityScale = gravityOutWater;
+			GetComponent<Rigidbody2D>().gravityScale = gravityOutWater;
 		}
 	}
 	

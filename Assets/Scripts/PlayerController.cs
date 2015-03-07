@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour {
 				float moveX = xAxis * speed * Time.deltaTime;
 				float moveY = yAxis * speed * Time.deltaTime;
 			
-				rigidbody2D.AddForce (new Vector3 (moveX, moveY, 0.0f));
+				GetComponent<Rigidbody2D>().AddForce (new Vector3 (moveX, moveY, 0.0f));
 				
 				// Boost
 				bool boostPressed = boostButton.isPressed;
@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour {
 					
 					// Add boost vector
 					Vector3 boostVector = transform.up * (jetMultiplier * speed) * Time.deltaTime;
-					rigidbody2D.AddForce(boostVector);
+					GetComponent<Rigidbody2D>().AddForce(boostVector);
 				}
 				else {
 					isBoosting = false;
@@ -106,7 +106,7 @@ public class PlayerController : MonoBehaviour {
 			Quaternion desiredDirection = Quaternion.AngleAxis(angle, Vector3.forward);
 			
 			if (xAxis != 0.0f || yAxis != 0.0f){
-				rigidbody2D.angularVelocity = 0.0f;
+				GetComponent<Rigidbody2D>().angularVelocity = 0.0f;
 				transform.rotation = Quaternion.Slerp(transform.rotation, desiredDirection, 0.2f);
 			}
 			
@@ -116,21 +116,21 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void SetGravityForAll(float gravity) {
-		rigidbody2D.gravityScale = gravity;
+		GetComponent<Rigidbody2D>().gravityScale = gravity;
 		// Set the gravity of the tentacles
 		foreach (Transform child in leftTentacle.transform)
 		{
 			//child is your child transform
-			child.rigidbody2D.gravityScale = gravity;
+			child.GetComponent<Rigidbody2D>().gravityScale = gravity;
 		}
 		foreach (Transform child in rightTentacle.transform)
 		{
 			//child is your child transform
-			child.rigidbody2D.gravityScale = gravity;
+			child.GetComponent<Rigidbody2D>().gravityScale = gravity;
 		}
 		foreach (Transform child in legs.transform){ // Legs
 			foreach (Transform legSegment in child.transform){
-				legSegment.rigidbody2D.gravityScale = gravity;
+				legSegment.GetComponent<Rigidbody2D>().gravityScale = gravity;
 			}
 		}
 	}	

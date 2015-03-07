@@ -49,7 +49,7 @@ public class ShipController : MonoBehaviour {
 			// If the ship is hit by a tentacle, reduce health
 			if (other.gameObject.tag == "TentaclePalm"){
 				currentHealth -= 40.0f;
-				rigidbody2D.AddForce(other.attachedRigidbody.velocity * 20.0f);
+				GetComponent<Rigidbody2D>().AddForce(other.attachedRigidbody.velocity * 20.0f);
 				AudioSource.PlayClipAtPoint(damageSound, transform.position);
 				gameController.AddScore(tentacleScore);
 				UpdateHealthLabel();
@@ -58,7 +58,7 @@ public class ShipController : MonoBehaviour {
 				PlayerController player = other.GetComponent<PlayerController>();
 				if (player.isBoosting){
 					currentHealth -= 50.0f;
-					rigidbody2D.AddForce(other.attachedRigidbody.velocity * 40.0f);
+					GetComponent<Rigidbody2D>().AddForce(other.attachedRigidbody.velocity * 40.0f);
 					AudioSource.PlayClipAtPoint(bigDamageSound, transform.position);
 					gameController.AddScore(bodyHitScore);
 					UpdateHealthLabel();

@@ -25,7 +25,7 @@ public class ShipMovement : MonoBehaviour {
 		// Move the ship in the specified direction
 		float xForce = (direction == "left") ? -speed : speed;
 		xForce = xForce * Time.deltaTime;
-		rigidbody2D.AddForce(new Vector2(xForce, 0.0f));
+		GetComponent<Rigidbody2D>().AddForce(new Vector2(xForce, 0.0f));
 	}
 	
 	public void SetDirection(string newDirection){

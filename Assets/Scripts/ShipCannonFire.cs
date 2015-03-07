@@ -23,8 +23,8 @@ public class ShipCannonFire : MonoBehaviour {
 			Vector3 dir = player.transform.position - transform.position;
 			dir = dir.normalized;
 			
-			cannonball.rigidbody2D.AddForce(dir * fireSpeed);
-			rigidbody2D.AddForce(-dir * (fireSpeed/15.0f));
+			cannonball.GetComponent<Rigidbody2D>().AddForce(dir * fireSpeed);
+			GetComponent<Rigidbody2D>().AddForce(-dir * (fireSpeed/15.0f));
 			
 			Destroy (cannonball, 8);
 		}
